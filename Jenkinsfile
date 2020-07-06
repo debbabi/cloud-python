@@ -1,32 +1,41 @@
 pipeline {
     agent any
     stages{
-        stage("build"){
-            steps{
-                echo "========executing A========"
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
+        }
+        stage('Test - install requirements') {
+            steps {
+                echo 'Installing requirements...'
+            }
+        }
+        stage('Test - pytests') {
+            steps {
+                echo 'Runing unit tests...'
+            }
+        }
+        stage('Submit Docker image build to CGP Cloud Build') {
+            steps {
+                echo 'Submitting docker image build...'
+            }
+        }
+        stage('Deploy Cloud Run Service') {
+            steps {
+                echo 'Deploying Cloud Run Service...'
             }
         }
     }
     post{
         always{
-            echo "========always========"
+            echo "======== Pipeline ends ========"
         }
         success{
-            echo "========pipeline executed successfully ========"
+            echo "======== Pipeline executed successfully ========"
         }
         failure{
-            echo "========pipeline execution failed========"
+            echo "======== Pipeline execution failed========"
         }
     }
 }
